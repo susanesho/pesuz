@@ -3,6 +3,9 @@ require "pesuz/version"
 module Pesuz
   class Application
     def call(env)
+      if env["PATH_INFO"] == "/"
+        return [ 302, { "location" => "pages"}, [] ]
+      end
       @rack_reqst = Rack::Request.new(env)
       path = @rack_reqst.path_info
       request_method = @rack_reqst.request_method.downcase
