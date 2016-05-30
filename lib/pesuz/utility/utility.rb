@@ -1,8 +1,8 @@
 class String
-  def snakecase
+  def snakize
     gsub!("::", "/")
-    gsub!(/([A-Z]+)([A-Z][a-z])/, '1_2')
-    gsub!(/([a-zd])([A-Z])/, '1_2')
+    gsub!(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+    gsub!(/([a-z\d])([A-Z])/, '\1_\2')
     tr!("-", "_")
     downcase!
     self
@@ -18,16 +18,16 @@ class String
   end
 
   def pluralize
-    gsub!(/([^aeiouy]|qu)y$/i, '1ies')
-    gsub!(/(ss|z|ch|sh|x)$/i, '1es')
-    gsub!(/(is)$/i, 'es')
-    gsub!(/(f|fe)$/i, 'ves')
-    gsub!(/(ex|ix)$/i, 'ices')
-    gsub!(/(a)$/i, 'ae')
-    gsub!(/(um|on)$/i, 'a')
-    gsub!(/(us)$/i, 'i')
-    gsub!(/(eau)$/i, 'eaux')
-    gsub!(/([^saeix])$/i, '1s')
+    gsub!(/([^aeiouy]|qu)y$/i, '\1ies')
+    gsub!(/(ss|z|ch|sh|x)$/i, '\1es')
+    gsub!(/(is)$/i, "es")
+    gsub!(/(f|fe)$/i, "ves")
+    gsub!(/(ex|ix)$/i, "ices")
+    gsub!(/(a)$/i, "ae")
+    gsub!(/(um|on)$/i, "a")
+    gsub!(/(us)$/i, "i")
+    gsub!(/(eau)$/i, "eaux")
+    gsub!(/([^saeix])$/i, '\1s')
     self
   end
 end
