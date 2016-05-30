@@ -1,4 +1,6 @@
 require "pesuz/version"
+require "pesuz/utility/utility"
+require "pesuz/routing/router"
 
 module Pesuz
   class Application
