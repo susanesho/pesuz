@@ -4,23 +4,24 @@ require 'pesuz/routing/router'
 
 module Pesuz
   class Application
-    def call(env)
-      return [302, { 'location' => 'pages' }, []] if env['PATH_INFO'] == '/'
-      @rack_reqst = Rack::Request.new(env)
-      path = @rack_reqst.path_info
-      request_method = @rack_reqst.request_method.downcase
-      return [500, {}, []] if path == '/favicon.ico'
-      controller, action = get_controller_and_action_for(path, request_method)
-      response = controller.new.send(action)
-      [200, { 'Content-Type' => 'text/html' }, [response]]
+    attr_reader :routes
+
+    def initialize
+      @routes = Routing::Router.new
     end
 
-    def get_controller_and_action_for(path, verb)
-      _, controller, action, others = path.split('/', 4)
-      require "#{controller.downcase}_controller.rb"
-      controller = Object.const_get(controller.capitalize! + 'Controller')
-      action = action.nil? ? verb : "#{verb}_#{action}"
-      [controller, action]
+    def call(env)
+      @request = Rack::Request.new(env)
+      route = mapper.map_to_route(@request)
+      if route
+        response = route.dispatch
+        return [200, { "Content-Type" => "text/html" }, [response]]
+      end
+      [404, {}, ["Route not found"]]
+    end
+
+    def mapper
+      @mapper ||= Routing::Mapper.new(routes.endpoints)
     end
   end
 end
