@@ -1,4 +1,4 @@
-require 'erubis'
+require "tilt"
 
 module Pesuz
   class Controller
@@ -24,20 +24,34 @@ module Pesuz
       response(render_template(*args))
     end
 
-    def render_template(view_name, locals = {})
-      filename = File.join('app', 'views', controller_name, "#{view_name}.erb")
-      template = File.read(filename)
-
+    def get_instance_variables
       vars = {}
       instance_variables.each do |var|
-        key = var.to_s.delete('@').to_sym
+        key = var.to_s.delete("@").to_sym
         vars[key] = instance_variable_get(var)
       end
-      Erubis::Eruby.new(template).result(locals.merge(vars))
+       vars
+    end
+
+    def render_template(view_name, locals = {})
+      template = Tilt::ERBTemplate.new(
+        File.join(
+          APP_ROOT,
+          "app",
+          "views",
+          controller_name,
+          "#{view_name}.html.erb"
+        )
+      )
+      template.render(self, locals.merge(get_instance_variables))
+    end
+
+    def redirect_to_url
+      @response = Rack::Response.new({}, 302, "location" => url)
     end
 
     def controller_name
-      self.class.to_s.gsub(/Controller$/, '').snakize
+      self.class.to_s.gsub(/Controller$/, "").snakize
     end
   end
 end

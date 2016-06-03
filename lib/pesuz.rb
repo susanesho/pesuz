@@ -1,10 +1,10 @@
-require 'pesuz/version'
-require 'pesuz/controller'
-require 'pesuz/utility/utility'
-require 'pesuz/utility/dependencies'
-require 'pesuz/routing/mapper'
-require 'pesuz/routing/route'
-require 'pesuz/routing/router'
+require "pesuz/version"
+require "pesuz/controller"
+require "pesuz/utility/utility"
+require "pesuz/utility/dependencies"
+require "pesuz/routing/mapper"
+require "pesuz/routing/route"
+require "pesuz/routing/router"
 
 module Pesuz
   class Application
@@ -20,7 +20,7 @@ module Pesuz
       if route
         route.dispatch
       else
-        [404, {}, ['Route not found']]
+        [404, {}, ["Route not found"]]
       end
     end
 

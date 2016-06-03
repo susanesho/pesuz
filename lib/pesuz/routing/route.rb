@@ -1,4 +1,4 @@
-require 'pesuz/utility/utility'
+require "pesuz/utility/utility"
 module Pesuz
   module Routing
     class Route
