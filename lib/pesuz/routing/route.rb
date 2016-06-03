@@ -1,3 +1,4 @@
+require 'pesuz/utility/utility'
 module Pesuz
   module Routing
     class Route
@@ -12,7 +13,10 @@ module Pesuz
       end
 
       def dispatch
-        klass.new(request).send(method_name)
+        controller = klass.new(request)
+        controller.send(method_name)
+        controller.render(method_name) unless controller.get_response
+        controller.get_response
       end
     end
   end
