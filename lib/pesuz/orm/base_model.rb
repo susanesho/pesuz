@@ -1,9 +1,14 @@
+require_relative "model_helper.rb"
+
 module Pesuz
-  class BaseModel < BaseMapper
-    @@db ||= BaseMapper.connect
+  class BaseModel < ModelHelper
 
     def self.to_table(table_name)
       @table_name = table_name
+    end
+
+    def self.table_name
+      @table_name
     end
 
     def self.property(column_name, args)
@@ -12,6 +17,8 @@ module Pesuz
     end
 
     def self.create_table
+      # query = "DROP TABLE todos"
+      # @@db.execute(query)
       query = "CREATE TABLE IF NOT EXISTS #{@table_name} (#{get_column_properties})"
       @@db.execute(query)
 
@@ -25,13 +32,21 @@ module Pesuz
         properties << key.to_s
         value.each do |key, value|
           properties << send("#{key.downcase}_query", value)
+
         end
         all_properties << properties.join(" ")
+
       end
+      all_properties.join(", ")
     end
 
     def self.primary_key_query(status)
       "PRIMARY KEY AUTOINCREMENT" if status
+    end
+
+    def self.create_accessors
+      metds = @properties.keys.map(&:to_sym)
+      metds.each {  |mtd| attr_accessor  mtd}
     end
 
     def self.nullable_query(status = true)
@@ -40,6 +55,41 @@ module Pesuz
 
     def self.type_query(value)
       value.to_s
+    end
+
+    def self.properties_keys
+      @properties.keys
+    end
+
+    def get_columns
+      columns = self.class.properties_keys
+      columns.delete(:id)
+      columns.join(",")
+
+
+    end
+
+    def new_record_placeholders
+      placeholders = ["?"] * (self.class.properties_keys.size - 1)
+      placeholders.join(",")
+
+    end
+
+    def new_record_values
+      properties = self.class.properties_keys
+      properties.delete(:id)
+      properties.map { |value| send(value) }
+
+    end
+
+    def self.map_object(row)
+      model = new
+
+      @properties.each_key.with_index do |value, index|
+        model.send("#{value}=", row[index])
+      end
+
+      model
     end
   end
 end

@@ -1,9 +1,9 @@
 require "sqlite3"
 
 module Pesuz
-  class BaseMapper
+  module BaseMapper
     def self.connect
-      SQLite3::Database.new File.join "db", "app.db"
+      SQLite3::Database.new "app.db"
     end
   end
 end
