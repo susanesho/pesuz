@@ -17,8 +17,6 @@ module Pesuz
     end
 
     def self.create_table
-      # query = "DROP TABLE todos"
-      # @@db.execute(query)
       query = "CREATE TABLE IF NOT EXISTS #{@table_name} (#{get_column_properties})"
       @@db.execute(query)
 
@@ -32,10 +30,8 @@ module Pesuz
         properties << key.to_s
         value.each do |key, value|
           properties << send("#{key.downcase}_query", value)
-
         end
         all_properties << properties.join(" ")
-
       end
       all_properties.join(", ")
     end
@@ -61,25 +57,44 @@ module Pesuz
       @properties.keys
     end
 
+    def update_placeholders(params)
+      columns = params.keys
+      columns.delete(:id)
+       columns.map { |col| "#{col}=?" }.join(",")
+    end
+
+    def update_values(params)
+      params.values << id
+    end
+
     def get_columns
       columns = self.class.properties_keys
       columns.delete(:id)
       columns.join(",")
-
-
     end
 
     def new_record_placeholders
       placeholders = ["?"] * (self.class.properties_keys.size - 1)
       placeholders.join(",")
+    end
 
+    def update_records_placeholders
+      columns = self.class.properties_keys
+      columns.delete(:id)
+      columns.map { |col| "#{col}=?" }.join(",")
+    end
+
+    def update_record_values
+      properties = self.class.properties_keys
+      properties.delete(:id)
+      ppts = properties.map { |method| send(method) }
+      ppts << send(:id)
     end
 
     def new_record_values
       properties = self.class.properties_keys
       properties.delete(:id)
       properties.map { |value| send(value) }
-
     end
 
     def self.map_object(row)
