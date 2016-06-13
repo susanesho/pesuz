@@ -5,6 +5,8 @@ require "pesuz/utility/dependencies"
 require "pesuz/routing/mapper"
 require "pesuz/routing/route"
 require "pesuz/routing/router"
+require "pesuz/orm/base_mapper"
+require "pesuz/orm/base_model"
 
 module Pesuz
   class Application

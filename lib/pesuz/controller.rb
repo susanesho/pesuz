@@ -46,7 +46,7 @@ module Pesuz
       template.render(self, locals.merge(get_instance_variables))
     end
 
-    def redirect_to_url
+    def redirect_to(url)
       @response = Rack::Response.new({}, 302, "location" => url)
     end
 
