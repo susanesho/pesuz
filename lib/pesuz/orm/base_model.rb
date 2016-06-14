@@ -2,13 +2,12 @@ require_relative "model_helper.rb"
 
 module Pesuz
   class BaseModel < ModelHelper
-
     def self.to_table(table_name)
       @table_name = table_name
     end
 
-    def self.table_name
-      @table_name
+    class << self
+      attr_reader :table_name
     end
 
     def self.property(column_name, args)
@@ -42,11 +41,11 @@ module Pesuz
 
     def self.create_accessors
       metds = @properties.keys.map(&:to_sym)
-      metds.each {  |mtd| attr_accessor  mtd}
+      metds.each { |mtd| attr_accessor mtd }
     end
 
     def self.nullable_query(status = true)
-      "NOT NULL" unless  status
+      "NOT NULL" unless status
     end
 
     def self.type_query(value)
@@ -60,7 +59,7 @@ module Pesuz
     def update_placeholders(params)
       columns = params.keys
       columns.delete(:id)
-       columns.map { |col| "#{col}=?" }.join(",")
+      columns.map { |col| "#{col}=?" }.join(",")
     end
 
     def update_values(params)

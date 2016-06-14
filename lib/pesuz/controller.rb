@@ -30,7 +30,7 @@ module Pesuz
         key = var.to_s.delete("@").to_sym
         vars[key] = instance_variable_get(var)
       end
-       vars
+      vars
     end
 
     def render_template(view_name, locals = {})

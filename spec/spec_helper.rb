@@ -1,4 +1,5 @@
 require "pesuz"
+require "pry"
 require "rack"
 require "rspec"
 require "simplecov"
@@ -25,13 +26,13 @@ ENV["RACK_ENV"] = "test"
 
 def create(n)
   todos = []
-    n.times  do
-      todo = Todo.new
-      todo.name = Faker::StarWars.planet
-      todo.body = Faker::StarWars.quote
-      todo.created_at = Time.now.to_s
-      todo.save
-      todos << todo
-    end
+  n.times  do
+    todo = Todo.new
+    todo.name = Faker::StarWars.planet
+    todo.body = Faker::StarWars.quote
+    todo.created_at = Time.now.to_s
+    todo.save
+    todos << todo
+  end
   todos
 end
