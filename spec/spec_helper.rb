@@ -33,3 +33,5 @@ def create(n)
   end
   todos
 end
+
+ENV["RACK_ENV"] = "test"
