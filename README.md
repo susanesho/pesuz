@@ -56,7 +56,7 @@ Pesuz supports GET, DELETE, PATCH, POST, PUT requests.
 All models to be used with the Pesuz framework are to inherit from the ActiveRecord class provided by Pesuz, in order to access the rich ORM functionalities provided. The ActiveRecord class acts as an interface between the model class and its database representation. A sample model file is provided below:
 
 ```ruby
-class Todo < Pesuz::Origin
+class Todo < Pesuz::BaseModel
   to_table :todos
   property :id, type: :integer, primary_key: true
   property :title, type: :text, nullable: false
@@ -88,12 +88,12 @@ On passing in the table name, and its properties, a call should be made to the `
 ### Controllers
 Controllers are key to the MVC structure, as they handle receiving requests, interacting with the database, and providing responses. Controllers are placed in the controllers folder, which is nested in the app folder.
 
-All controllers should inherit from the BaseController class provided by Pesuz to inherit methods which simplify accessing request parameters and returning responses by rendering views.
+All controllers should inherit from the Controller class provided by Pesuz to inherit methods which simplify accessing request parameters and returning responses by rendering views.
 
 A sample structure for a controller file is:
 
 ```ruby
-class TodoController < Pesuz::BaseController
+class TodoController < Pesuz::Controller
   def index
     @todos = Todo.all
   end
@@ -157,7 +157,7 @@ generate a schema.
 
 To contribute to this work:
 
-1. Fork it ( https://github.com/[andela-oesho]/Pesuz )
+1. Fork it ( https://github.com/[andela-oesho]/pesuz )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
