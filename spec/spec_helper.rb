@@ -2,10 +2,14 @@ require "coveralls"
 require "pesuz"
 require "rack"
 require "rspec"
+$:<< File.join(File.dirname(__FILE__), '..')
+# require_relative "../spec/integration/suzsnam/config/application.rb"
 
 Coveralls.wear!
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 $LOAD_PATH.unshift File.expand_path("../../spec", __FILE__)
+
+
 
 RSpec.shared_context type: :feature do
   require "capybara/rspec"
