@@ -1,11 +1,7 @@
 AllCops:
   Exclude:
     - "vendor/**/*"
-    - "config/initializers/**/*"
     - "db/schema.rb"
-    - "db/seeds.rb"
-    - "bin/spring"
-    - "spec/rails_helper.rb"
   UseCache: false
 Style/CollectionMethods:
   Description: Preferred collection methods.
