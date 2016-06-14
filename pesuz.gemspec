@@ -1,4 +1,3 @@
-# coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "pesuz/version"
@@ -9,13 +8,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ["andela-oesho"]
   spec.email         = ["susan.esho@andela.com"]
 
-  spec.summary       = "Write a short summary, because Rubygems requires one."
-  spec.description   = "Write a longer description or delete this line."
-  spec.homepage      = ""
+  spec.summary       = "A simple mvc framework"
+  spec.description   = "A simple mvc rack framework"
+  spec.homepage      = "https://github.com/andela-oosiname/mgt"
   spec.license       = "MIT"
 
-  # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
-  # delete this section to allow pushing this gem to any host.
   if spec.respond_to?(:metadata)
     spec.metadata["allowed_push_host"] = "Set to 'http://mygemserver.com'"
   else
@@ -31,9 +28,13 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_runtime_dependency "rack", "~> 1.0"
+  spec.add_development_dependency "rack-test", "~> 0.6"
+  spec.add_development_dependency "coveralls"
+  spec.add_development_dependency "capybara"
+  spec.add_development_dependency "faker"
+
   spec.add_runtime_dependency "erubis"
   spec.add_runtime_dependency "pry"
   spec.add_runtime_dependency "sqlite3"
   spec.add_runtime_dependency "tilt"
-  spec.add_development_dependency "rack-test", "~> 0.6"
 end
