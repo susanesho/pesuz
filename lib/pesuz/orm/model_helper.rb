@@ -4,7 +4,8 @@ module Pesuz
     @@db ||= BaseMapper.connect
 
     def self.all
-      record = @@db.execute "SELECT #{properties_keys.join(',')} FROM #{@table_name}"
+      record = @@db.execute "SELECT #{properties_keys.join(',')}
+      FROM #{@table_name} ORDER BY id DESC"
 
       record.map do |row|
         map_object(row)
