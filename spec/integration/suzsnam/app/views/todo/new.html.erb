@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=material+Icons">
+    <link href="//cdn.muicss.com/mui-0.6.0/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.muicss.com/mui-0.6.0/js/mui.min.js"></script>
+    <style>
+    form{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    padding: 70px;
+    }
+    .mdl-mini-footer {
+    padding: 32px 16px;
+    color: #fff;
+    background-color: rgb(63,81,181);
+    }
+    a {
+    color: rgb(255,255,255);
+    font-weight: 500;
+    text-decoration: none;
+    }
+    .mui-btn {
+    background: rgb(255,64,129);
+    color: #fff;
+    }
+    legend {
+    color: rgb(255,64,129);
+    }
+    </style>
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout">
+      <header class="mdl-layout__header mdl-layout__header--scroll">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title"><a href="/todo">Suzsnam</span></a>
+          <div class="mdl-layout-spacer"></div>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title"><a href="/todo/">Suzsnam</span></a>
+      </div>
+      <main class="mdl-layout__content">
+      <div>
+        &nbsp;
+      </div>
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--4-col">
+        </div>
+        <div class="mdl-cell mdl-cell--4-col">
+          <div class="page-content">
+            <form action="/todo/create" method="post">
+              <legend>Add a new Todo</legend>
+              <div class="mui-textfield">
+                <input type="text" name="name">
+                <label>Name</label>
+              </div>
+              <div class="mui-textfield">
+                <textarea name="body"></textarea>
+                <label>Body</label>
+              </div>
+              <button type="submit" class="mui-btn mui-btn--raised">Submit</button>
+            </form>
+          </div>
+          <div class="mdl-cell mdl-cell--4-col">
+          </div>
+        </div>
+      </div>
+      </main>
+      <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+          <div class="mdl-logo"> © 2016 Copyright </div>
+          <ul class="mdl-mini-footer__link-list">
+            <li><a href="#">Designed by Pesuz</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
