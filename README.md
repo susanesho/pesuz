@@ -15,7 +15,7 @@ Pesuz is ligthweight and hence fit for simple and quick applications. It makes a
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'Pesuz'
+gem 'pesuz'
 ```
 
 And then execute:
@@ -24,7 +24,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install Pesuz
+    $ gem install pesuz
 
 ## Usage
 
@@ -39,7 +39,7 @@ Routing with Pesuz deals with directing requests to the appropriate controllers.
 
 ```ruby
 TodoApplication.routes.draw do
-  get "/todo", to: "todo#index"
+  root "todo#index"
   get "/todo/new", to: "todo#new"
   post "/todo", to: "todo#create"
   get "/todo/:id", to: "todo#show"
@@ -49,11 +49,11 @@ TodoApplication.routes.draw do
   delete "/todo/:id", to: "todo#destroy"
 end
 ```
-Pesuz supports GET, DELETE, PATCH, POST, PUT requests.
+Pesuz supports GET, DELETE, PATCH, POST and PUT requests.
 
 
 ### Models
-All models to be used with the Pesuz framework are to inherit from the ActiveRecord class provided by Pesuz, in order to access the rich ORM functionalities provided. The ActiveRecord class acts as an interface between the model class and its database representation. A sample model file is provided below:
+All models to be used with the Pesuz framework are to inherit from the BaseModel class provided by Pesuz, in order to access the rich ORM functionalities provided. The BaseModel class acts as an interface between the model class and its database representation. A sample model file is provided below:
 
 ```ruby
 class Todo < Pesuz::BaseModel
@@ -79,7 +79,7 @@ The `primary_key` argument is used to specify that the column should be used as 
 
 The `nullable` argument is used to specify whether a column should have null values, or not.
 
-While creating models, the id property declaration is optional. If this is is not provided, the Pesuz ORM adds it automatically, and sets it as the primary key. Thus, it should only be set if you'd like to use a different type as the primary key.
+While creating models, the id property declaration is optional. If this is not provided, the Pesuz ORM adds it automatically, and sets it as the primary key. Thus, it should only be set if you'd like to use a different type as the primary key.
 
 On passing in the table name, and its properties, a call should be made to the `create_table` method to persist the model to database by creating the table.
 
@@ -98,6 +98,7 @@ class TodoController < Pesuz::Controller
   end
 
   def new
+   todo = Todo.new
   end
 
   def show
@@ -119,7 +120,7 @@ Explicitly calling `render` to render template files is optional. If it's not ca
 ### Views
 Currently, view templates are handled through the Tilt gem, with the Erubis template engine. See https://github.com/rtomayko/tilt for more details.
 
-View templates are mapped to controller actions and must assume the same nomenclature as their respective actions.Erbuis is used as the templating engine and files which are views are required to have the .erb file extension after the .html extension. Views are placed inside the `app/views` folder. A view to be rendered for the new action in the todoController for example is saved as `new.html.erb` in the todo folder, nested in the views folder.
+View templates are mapped to controller actions and must assume the same nomenclature as their respective actions.Erbuis is used as the templating engine and files which the views are required to have the .erb file extension after the .html extension. Views are placed inside the `app/views` folder. A view to be rendered for the new action in the todoController for example is saved as `new.html.erb` in the todo folder, nested in the views folder.
 
 ### External Dependencies
 The Pesuz framework has a few dependencies. These are listed below, with links to source pages for each.
@@ -135,7 +136,7 @@ The Pesuz framework has a few dependencies. These are listed below, with links t
 
 ## Running the tests
 
-Test files are placed inside the spec folder and have been split into two sub folders, one for unit tests and the other for integration tests. You can run the tests from your command line client by typing `rspec spec`
+Test files are placed inside the spec folder and have been split into two sub folders, one for unit tests and the other for integration tests. You can run the tests from your command line client by typing `rspec`
 
 ## Development
 
@@ -143,14 +144,14 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-Limitations
+##Limitations
 
-This version of the gem does not
+This version of the gem does not support
 
-support model relationships.
-implement callbacks.
-support migration generation.
-generate a schema.
+* model relationships.
+* implementing callbacks.
+* migration generation.
+* generating a schema.
 
 ## Contributing
 
@@ -161,7 +162,7 @@ To contribute to this work:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
-6. Wait
+6. Wait for pull request to be reviewed and merged
 
 
 
