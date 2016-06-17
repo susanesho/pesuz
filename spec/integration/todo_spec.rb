@@ -5,19 +5,25 @@ describe "Todo Spec", type: :feature do
     Todo.destroy_all
   end
 
-  context  "visiting index page" do
-    it "has index page" do
-      visit "/todo"
+  feature "Suzsnam todo app hompepage" do
+    scenario "Displays all todos in the database" do
+      todos = create(3)
+      visit "/"
 
       expect(page).to have_content("Total Task")
       expect(page).to have_content(" Add New Todo List")
       expect(page).to have_content("Total task counts of todos")
+
+      expect(page).to have_content(todos[0].name)
+      expect(page).to have_content(todos[1].name)
+      expect(page).to have_content(todos[2].name)
     end
   end
 
-  context "creating a todo" do
-    it "creates a new todo" do
+  feature "Create" do
+    scenario "Creating a new todo list" do
       visit "/todo/new"
+
       expect(page).to have_content("Add a new Todo")
 
       fill_in("name", with: "Paris")
@@ -28,8 +34,8 @@ describe "Todo Spec", type: :feature do
     end
   end
 
-  context "when updating a specific todo list" do
-    it "updates the specific list" do
+  feature "Update" do
+    scenario "Updating a specific todo list" do
       create(1)
       todo = Todo.last
       visit "/todo/#{todo.id}"
@@ -44,29 +50,33 @@ describe "Todo Spec", type: :feature do
       expect(Todo.last.body).to eq "Take a trip to Barbados"
     end
   end
-  context "when deleting a specific todo list" do
-    it "deletes the specific todo list" do
-      create 3
 
+  feature "Delete" do
+    scenario "Deleting a specific todo list" do
+      create(3)
       visit "/todo"
+
+      expect(Todo.all.length).to eq 3
 
       first(".delete").click
       expect(Todo.all.length).to eq 2
     end
   end
 
-  context "when getting a specific todo list" do
-    it "shows the specific todo" do
-      todos = create 5
-      todo = todos.last
-      visit "/todo"
+  feature "Show" do
+    scenario "Showing a specific todo list"  do
+      create(5)
+      todo = Todo.last
+      visit "/todo/#{todo.id}"
 
-      first(".view").click
+      expect(page).to have_content("Edit")
+      expect(page).to have_content("delete")
       expect(page).to have_content(todo.name)
     end
   end
-  context "when getting a path that does not exist" do
-    it "renders a 404 error page" do
+
+  feature "Error page" do
+    scenario "Visiting a route that does not exist" do
       visit "/todoss"
 
       expect(page).to have_content("Route not found")
