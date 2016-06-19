@@ -120,7 +120,7 @@ Explicitly calling `render` to render template files is optional. If it's not ca
 ### Views
 Currently, view templates are handled through the Tilt gem, with the Erubis template engine. See https://github.com/rtomayko/tilt for more details.
 
-View templates are mapped to controller actions and must assume the same nomenclature as their respective actions.Erbuis is used as the templating engine and files which are views are required to have the .erb file extension after the .html extension. Views are placed inside the `app/views` folder. A view to be rendered for the new action in the todoController for example is saved as `new.html.erb` in the todo folder, nested in the views folder.
+View templates are mapped to controller actions and must assume the same nomenclature as their respective actions.Erbuis is used as the templating engine and files which the views are required to have the .erb file extension after the .html extension. Views are placed inside the `app/views` folder. A view to be rendered for the new action in the todoController for example is saved as `new.html.erb` in the todo folder, nested in the views folder.
 
 ### External Dependencies
 The Pesuz framework has a few dependencies. These are listed below, with links to source pages for each.
@@ -144,14 +144,14 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-Limitations
+##Limitations
 
-This version of the gem does not
+This version of the gem does not support
 
-support model relationships.
-implement callbacks.
-support migration generation.
-generate a schema.
+* model relationships.
+* implementing callbacks.
+* migration generation.
+* generating a schema.
 
 ## Contributing
 
@@ -162,7 +162,7 @@ To contribute to this work:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
-6. Wait
+6. Wait for pull request to be reviewed and merged
 
 
 
