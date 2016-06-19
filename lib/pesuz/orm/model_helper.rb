@@ -3,12 +3,46 @@ module Pesuz
     extend BaseMapper
     @@db ||= BaseMapper.connect
 
-    def self.all
-      record = @@db.execute "SELECT #{properties_keys.join(',')}
-      FROM #{@table_name} ORDER BY id DESC"
+    class << self
 
-      record.map do |row|
-        map_object(row)
+      def all
+        record = @@db.execute "SELECT #{properties_keys.join(',')}
+        FROM #{@table_name} ORDER BY id DESC"
+
+        record.map do |row|
+          map_object(row)
+        end
+      end
+
+       def destroy(id)
+        @@db.execute "DELETE FROM #{@table_name} WHERE id = ?", id
+      end
+
+       def first
+        query = @@db.execute(
+          "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
+        ).first
+
+        map_object(query)
+      end
+
+      def last
+        query = @@db.execute(
+          "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
+        ).first
+
+        map_object(query)
+      end
+
+      def find(id)
+        record = @@db.execute("SELECT #{properties_keys.join(',')}
+                  FROM #{@table_name} WHERE id = ?", id).first
+
+        map_object(record)
+      end
+
+      def destroy_all
+        @@db.execute "DELETE FROM #{@table_name}"
       end
     end
 
@@ -20,11 +54,7 @@ module Pesuz
       else
         @@db.execute "INSERT INTO #{table_name} (#{get_columns})
         VALUES  (#{new_record_placeholders})", new_record_values
-     end
-    end
-
-    def self.destroy(id)
-      @@db.execute "DELETE FROM #{@table_name} WHERE id = ?", id
+      end
     end
 
     def update(params)
@@ -37,33 +67,6 @@ module Pesuz
       table_name = self.class.table_name
 
       @@db.execute "DELETE FROM #{table_name} WHERE id = ?", id
-    end
-
-    def self.first
-      query = @@db.execute(
-        "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
-      ).first
-
-      map_object(query)
-    end
-
-    def self.last
-      query = @@db.execute(
-        "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
-      ).first
-
-      map_object(query)
-    end
-
-    def self.find(id)
-      record = @@db.execute("SELECT #{properties_keys.join(',')}
-                FROM #{@table_name} WHERE id = ?", id).first
-
-      map_object(record)
-    end
-
-    def self.destroy_all
-      @@db.execute "DELETE FROM #{@table_name}"
     end
   end
 end
