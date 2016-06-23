@@ -59,7 +59,7 @@ describe "Base Model" do
     describe ".last" do
       it "get the last row in a table" do
         create(3)
-        last_todo = Todo.first
+        last_todo = Todo.last
 
         expect(Todo.last.name).to eq last_todo.name
         expect(Todo.last.body).to eq last_todo.body

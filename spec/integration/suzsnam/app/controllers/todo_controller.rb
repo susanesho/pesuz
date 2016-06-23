@@ -33,6 +33,7 @@ class TodoController < Pesuz::Controller
     todo.body = params["body"]
     todo.created_at = Time.now.to_s
     todo.save
-    redirect_to "/todo"
+
+    redirect_to "/todo/#{Todo.last.id}"
   end
 end

@@ -4,7 +4,6 @@ module Pesuz
     @@db ||= BaseMapper.connect
 
     class << self
-
       def all
         record = @@db.execute "SELECT #{properties_keys.join(',')}
         FROM #{@table_name} ORDER BY id DESC"
@@ -14,21 +13,21 @@ module Pesuz
         end
       end
 
-       def destroy(id)
+      def destroy(id)
         @@db.execute "DELETE FROM #{@table_name} WHERE id = ?", id
-      end
+     end
 
-       def first
+      def first
         query = @@db.execute(
           "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
         ).first
 
         map_object(query)
-      end
+     end
 
       def last
         query = @@db.execute(
-          "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
+          "SELECT * FROM #{@table_name} ORDER BY id DESC LIMIT 1"
         ).first
 
         map_object(query)

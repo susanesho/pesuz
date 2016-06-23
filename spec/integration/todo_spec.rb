@@ -64,7 +64,7 @@ describe "Todo Spec", type: :feature do
   end
 
   feature "Show" do
-    scenario "Showing a specific todo list"  do
+    scenario "Showing a specific todo list" do
       create(5)
       todo = Todo.last
       visit "/todo/#{todo.id}"
