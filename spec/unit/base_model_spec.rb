@@ -82,7 +82,7 @@ describe "Base Model" do
     describe ".destroy_all" do
       it "destroys all the rows in the table" do
         create(10)
-        destroy_todos = Todo.destroy_all
+        Todo.destroy_all
 
         expect(Todo.all.length).to eq 0
       end
