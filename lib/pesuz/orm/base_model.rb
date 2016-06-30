@@ -26,8 +26,8 @@ module Pesuz
         @properties.each do |key, value|
           properties ||= []
           properties << key.to_s
-          value.each do |key, value|
-            properties << send("#{key.downcase}_query", value)
+          value.each do |name, type|
+            properties << send("#{name.downcase}_query", type)
           end
           all_properties << properties.join(" ")
         end

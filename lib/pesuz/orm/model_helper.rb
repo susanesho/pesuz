@@ -1,7 +1,7 @@
 module Pesuz
   class ModelHelper
     extend BaseMapper
-    @@db ||= BaseMapper.connect
+    @@db ||= connect
 
     class << self
       def all
@@ -15,7 +15,7 @@ module Pesuz
 
       def destroy(id)
         @@db.execute "DELETE FROM #{@table_name} WHERE id = ?", id
-     end
+      end
 
       def first
         query = @@db.execute(
@@ -23,7 +23,7 @@ module Pesuz
         ).first
 
         map_object(query)
-     end
+      end
 
       def last
         query = @@db.execute(
