@@ -1,9 +1,12 @@
-require_relative "model_helper.rb"
-
 module Pesuz
-  class BaseModel < ModelHelper
+  class BaseModel
+    include ModelHelper
+    extend ModelClassMethods
+    extend BaseMapper
+    @@db ||= connect
+
     class << self
-      attr_reader :table_name
+      attr_reader :table_name, :properties
 
       def to_table(table_name)
         @table_name = table_name
@@ -21,89 +24,68 @@ module Pesuz
         create_accessors
       end
 
-      def get_column_properties
-        all_properties = []
-        @properties.each do |key, value|
-          properties ||= []
-          properties << key.to_s
-          value.each do |name, type|
-            properties << send("#{name.downcase}_query", type)
-          end
-          all_properties << properties.join(" ")
+      def all
+        record = @@db.execute "SELECT * FROM #{@table_name} ORDER BY id DESC"
+
+        record.map do |row|
+          map_object(row)
         end
-        all_properties.join(", ")
       end
 
-      def primary_key_query(status)
-        "PRIMARY KEY AUTOINCREMENT" if status
+      def destroy(id)
+        @@db.execute "DELETE FROM #{@table_name} WHERE id = ?", id
       end
 
-      def create_accessors
-        methods = @properties.keys.map(&:to_sym)
-        methods.each { |method| attr_accessor method }
+      def first
+        query = @@db.execute(
+          "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
+        ).first
+
+        map_object(query)
       end
 
-      def nullable_query(status = true)
-        "NOT NULL" unless status
+      def last
+        query = @@db.execute(
+          "SELECT * FROM #{@table_name} ORDER BY id DESC LIMIT 1"
+        ).first
+
+        map_object(query)
       end
 
-      def type_query(value)
-        value.to_s
+
+      def find(id)
+        record = @@db.execute("SELECT *
+                  FROM #{@table_name} WHERE id = ?", id).first
+
+        map_object(record)
       end
 
-      def properties_keys
-        @properties.keys
+      def destroy_all
+        @@db.execute "DELETE FROM #{@table_name}"
       end
-
-      def map_object(row)
-        model = new
-
-        @properties.each_key.with_index do |value, index|
-          model.send("#{value}=", row[index])
-        end
-
-        model
-      end
-  end
-
-    def update_placeholders(params)
-      columns = params.keys
-      columns.delete(:id)
-      columns.map { |col| "#{col}=?" }.join(",")
     end
 
-    def update_values(params)
-      params.values << id
+    def save
+      table_name = self.class.table_name
+      if id
+        @@db.execute "UPDATE #{table_name} SET
+        #{update_records_placeholders} WHERE id = ?", update_record_values
+      else
+        @@db.execute "INSERT INTO #{table_name} (#{get_columns})
+        VALUES  (#{new_record_placeholders})", new_record_values
+      end
     end
 
-    def get_columns
-      columns = self.class.properties_keys
-      columns.delete(:id)
-      columns.join(",")
+    def update(params)
+      table_name = self.class.table_name
+      @@db.execute "UPDATE #{table_name} SET
+      #{update_placeholders(params)} WHERE id=?", update_values(params)
     end
 
-    def new_record_placeholders
-      placeholders = ["?"] * (self.class.properties_keys.size - 1)
-      placeholders.join(",")
-    end
+    def destroy
+      table_name = self.class.table_name
 
-    def update_records_placeholders
-      columns = self.class.properties_keys
-      columns.delete(:id)
-      columns.map { |col| "#{col}=?" }.join(",")
-    end
-
-    def update_record_values
-      properties = self.class.properties_keys
-      properties.delete(:id)
-      ppts = properties.map { |method| send(method) }
-      ppts << send(:id)
-    end
-
-    def new_record_values
-      properties = self.class.properties_keys
-      properties.delete(:id)
-      properties.map { |value| send(value) }
+      @@db.execute "DELETE FROM #{table_name} WHERE id = ?", id
     end
   end
 end

@@ -29,8 +29,10 @@ module Pesuz
         placeholders = []
         path.gsub!(/(:\w+)/) do |match|
           placeholders << match[1..-1].freeze
+
           "(?<#{placeholders.last}>[^/?#]+)"
         end
+
         [/^#{path}$/, placeholders]
       end
 
@@ -42,3 +44,4 @@ module Pesuz
     end
   end
 end
+
