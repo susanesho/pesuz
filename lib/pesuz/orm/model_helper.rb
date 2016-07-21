@@ -1,71 +1,45 @@
 module Pesuz
-  class ModelHelper
-    extend BaseMapper
-    @@db ||= connect
+  module ModelHelper
+    private
 
-    class << self
-      def all
-        record = @@db.execute "SELECT #{properties_keys.join(',')}
-        FROM #{@table_name} ORDER BY id DESC"
-
-        record.map do |row|
-          map_object(row)
-        end
-      end
-
-      def destroy(id)
-        @@db.execute "DELETE FROM #{@table_name} WHERE id = ?", id
-      end
-
-      def first
-        query = @@db.execute(
-          "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
-        ).first
-
-        map_object(query)
-      end
-
-      def last
-        query = @@db.execute(
-          "SELECT * FROM #{@table_name} ORDER BY id DESC LIMIT 1"
-        ).first
-
-        map_object(query)
-      end
-
-      def find(id)
-        record = @@db.execute("SELECT #{properties_keys.join(',')}
-                  FROM #{@table_name} WHERE id = ?", id).first
-
-        map_object(record)
-      end
-
-      def destroy_all
-        @@db.execute "DELETE FROM #{@table_name}"
-      end
+    def update_placeholders(params)
+      columns = params.keys
+      columns.delete(:id)
+      columns.map { |col| "#{col}=?" }.join(",")
     end
 
-    def save
-      table_name = self.class.table_name
-      if id
-        @@db.execute "UPDATE #{table_name} SET
-        #{update_records_placeholders} WHERE id = ?", update_record_values
-      else
-        @@db.execute "INSERT INTO #{table_name} (#{get_columns})
-        VALUES  (#{new_record_placeholders})", new_record_values
-      end
+    def update_values(params)
+      params.values << id
     end
 
-    def update(params)
-      table_name = self.class.table_name
-      @@db.execute "UPDATE #{table_name} SET
-      #{update_placeholders(params)} WHERE id=?", update_values(params)
+    def get_columns
+      columns = self.class.properties.keys
+      columns.delete(:id)
+      columns.join(",")
     end
 
-    def destroy
-      table_name = self.class.table_name
+    def new_record_placeholders
+      placeholders = ["?"] * (self.class.properties.keys.size - 1)
+      placeholders.join(",")
+    end
 
-      @@db.execute "DELETE FROM #{table_name} WHERE id = ?", id
+    def update_records_placeholders
+      columns = self.class.properties.keys
+      columns.delete(:id)
+      columns.map { |col| "#{col}=?" }.join(",")
+    end
+
+    def update_record_values
+      properties = self.class.properties.keys
+      properties.delete(:id)
+      ppts = properties.map { |method| send(method) }
+      ppts << send(:id)
+    end
+
+    def new_record_values
+      properties = self.class.properties.keys
+      properties.delete(:id)
+      properties.map { |value| send(value) }
     end
   end
 end

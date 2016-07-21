@@ -6,6 +6,8 @@ require "pesuz/routing/mapper"
 require "pesuz/routing/route"
 require "pesuz/routing/router"
 require "pesuz/orm/base_mapper"
+require "pesuz/orm/model_helper.rb"
+require "pesuz/orm/model_class_methods"
 require "pesuz/orm/base_model"
 
 module Pesuz
