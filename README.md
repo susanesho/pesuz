@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/andela-oesho/pesuz.svg?branch=master)](https://travis-ci.org/andela-oesho/Pesuz)
+[![Build Status](https://semaphoreci.com/api/v1/andela-oesho/pesuz/branches/master/shields_badge.svg)](https://semaphoreci.com/andela-oesho/pesuz)
 [![Code Climate](https://codeclimate.com/github/andela-oesho/pesuz/badges/gpa.svg)](https://codeclimate.com/github/andela-oesho/pesuz)
 [![Coverage Status](https://coveralls.io/repos/github/andela-oesho/pesuz/badge.svg?branch=master)](https://coveralls.io/github/andela-oesho/pesuz?branch=master)
 

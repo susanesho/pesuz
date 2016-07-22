@@ -40,6 +40,6 @@ module ModelClassMethods
    @properties.each_key.with_index do |value, index|
      model.send("#{value}=", row[index])
    end
-   model
- end
+    model
+  end
 end

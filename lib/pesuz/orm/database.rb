@@ -1,7 +1,7 @@
 require "sqlite3"
 
 module Pesuz
-  module BaseMapper
+  module Database
     def connect
       SQLite3::Database.new "app.db"
     end

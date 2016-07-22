@@ -7,7 +7,7 @@ describe "Todo Spec", type: :feature do
 
   feature "Suzsnam todo app hompepage" do
     scenario "Displays all todos in the database" do
-      todos = create(3)
+      todos = create_list(:todo, 5)
       visit "/"
 
       expect(page).to have_content("Total Task")
@@ -24,8 +24,6 @@ describe "Todo Spec", type: :feature do
     scenario "Creating a new todo list" do
       visit "/todo/new"
 
-      expect(page).to have_content("Add a new Todo")
-
       fill_in("name", with: "Paris")
       fill_in("body", with: "I am making a trip to Paris")
       click_button("Submit")
@@ -36,12 +34,11 @@ describe "Todo Spec", type: :feature do
 
   feature "Update" do
     scenario "Updating a specific todo list" do
-      create(1)
+      create_list(:todo, 1)
       todo = Todo.last
       visit "/todo/#{todo.id}"
 
       click_link("Edit")
-      expect(page).to have_content("Edit a")
       fill_in("name", with: "get carton")
       fill_in("body", with: "Take a trip to Barbados")
       click_button("Submit")
@@ -53,19 +50,18 @@ describe "Todo Spec", type: :feature do
 
   feature "Delete" do
     scenario "Deleting a specific todo list" do
-      create(3)
+      create_list(:todo, 3)
       visit "/todo"
 
-      expect(Todo.all.length).to eq 3
-
       first(".delete").click
+
       expect(Todo.all.length).to eq 2
     end
   end
 
   feature "Show" do
     scenario "Showing a specific todo list" do
-      create(5)
+      create_list(:todo, 5)
       todo = Todo.last
       visit "/todo/#{todo.id}"
 
