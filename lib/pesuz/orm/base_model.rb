@@ -2,67 +2,72 @@ module Pesuz
   class BaseModel
     include ModelHelper
     extend ModelClassMethods
-    extend BaseMapper
+    extend Database
     @@db ||= connect
 
-    class << self
-      attr_reader :table_name, :properties
+    attr_reader :table_name, :properties
 
-      def to_table(table_name)
-        @table_name = table_name
+    def self.to_table(table_name)
+      @table_name = table_name
+    end
+
+    def self.table_name
+      @table_name
+    end
+
+    def self.properties
+      @properties
+    end
+
+    def self.property(column_name, args)
+      @properties ||= {}
+      @properties[column_name] = args
+    end
+
+    def self.create_table
+      query = "CREATE TABLE IF NOT EXISTS #{@table_name} (#{get_column_properties})"
+      @@db.execute(query)
+
+      create_accessors
+    end
+
+    def self.all
+      record = @@db.execute "SELECT * FROM #{@table_name} ORDER BY id DESC"
+      record.map do |row|
+        map_object(row)
       end
+    end
 
-      def property(column_name, args)
-        @properties ||= {}
-        @properties[column_name] = args
-      end
+    def self.destroy(id)
+      @@db.execute "DELETE FROM #{@table_name} WHERE id = ?", id
+    end
 
-      def create_table
-        query = "CREATE TABLE IF NOT EXISTS #{@table_name} (#{get_column_properties})"
-        @@db.execute(query)
+    def self.first
+      query = @@db.execute(
+        "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
+      ).first
 
-        create_accessors
-      end
+      map_object(query)
+    end
 
-      def all
-        record = @@db.execute "SELECT * FROM #{@table_name} ORDER BY id DESC"
+    def self.last
+      query = @@db.execute(
+        "SELECT * FROM #{@table_name} ORDER BY id DESC LIMIT 1"
+      ).first
 
-        record.map do |row|
-          map_object(row)
-        end
-      end
-
-      def destroy(id)
-        @@db.execute "DELETE FROM #{@table_name} WHERE id = ?", id
-      end
-
-      def first
-        query = @@db.execute(
-          "SELECT * FROM #{@table_name} ORDER BY id LIMIT 1"
-        ).first
-
-        map_object(query)
-      end
-
-      def last
-        query = @@db.execute(
-          "SELECT * FROM #{@table_name} ORDER BY id DESC LIMIT 1"
-        ).first
-
-        map_object(query)
-      end
+      map_object(query)
+    end
 
 
-      def find(id)
-        record = @@db.execute("SELECT *
-                  FROM #{@table_name} WHERE id = ?", id).first
+    def self.find(id)
+      record = @@db.execute("SELECT *
+                FROM #{@table_name} WHERE id = ?", id).first
 
-        map_object(record)
-      end
+      map_object(record)
+    end
 
-      def destroy_all
-        @@db.execute "DELETE FROM #{@table_name}"
-      end
+    def self.destroy_all
+      @@db.execute "DELETE FROM #{@table_name}"
     end
 
     def save
