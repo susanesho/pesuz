@@ -60,8 +60,8 @@ module Pesuz
 
 
     def self.find(id)
-      record = @@db.execute("SELECT *
-                FROM #{@table_name} WHERE id = ?", id).first
+      record = @@db.execute(
+        "SELECT * FROM #{@table_name} WHERE id = ?", id).first
 
       map_object(record)
     end
@@ -80,6 +80,8 @@ module Pesuz
         VALUES  (#{new_record_placeholders})", new_record_values
       end
     end
+
+    alias save! save
 
     def update(params)
       table_name = self.class.table_name

@@ -7,18 +7,14 @@ describe "Base Model" do
 
   describe ".all" do
     it "returns all the rows in the table" do
-      create(5)
+      create_list(:todo, 5)
       expect(Todo.all.length).to eq 5
     end
   end
 
   describe "#save" do
     it "saves a new row" do
-      todo = Todo.new
-      todo.name = Faker::StarWars.planet
-      todo.body = Faker::StarWars.quote
-      todo.created_at = Time.now.to_s
-      todo.save
+      todo = create(:todo)
 
       expect(Todo.first.name).to eq todo.name
       expect(Todo.first.body).to eq todo.body
@@ -27,7 +23,7 @@ describe "Base Model" do
 
   describe ".destroy" do
     it "destroys a row in the table" do
-      create(7)
+      create_list(:todo, 7)
       todos = Todo.last
       todos.destroy
 
@@ -37,7 +33,7 @@ describe "Base Model" do
 
   describe "#update" do
     it "updates a row with the new fields specified" do
-      create(2)
+      create(:todo)
       first_todo = Todo.first
       first_todo.update(name: "banji", body: "bankol williams ni oruko eh joor")
 
@@ -47,7 +43,7 @@ describe "Base Model" do
 
     describe ".first" do
       it "get the first row in a table" do
-        create(3)
+        create_list(:todo, 3)
         first_todo = Todo.first
 
         expect(Todo.first.name).to eq first_todo.name
@@ -58,7 +54,7 @@ describe "Base Model" do
 
     describe ".last" do
       it "get the last row in a table" do
-        create(3)
+        create_list(:todo, 3)
         last_todo = Todo.last
 
         expect(Todo.last.name).to eq last_todo.name
@@ -69,7 +65,7 @@ describe "Base Model" do
 
     describe ".find" do
       it "get the first row in a table" do
-        create(1)
+        create_list(:todo, 1)
         find_todo_id = Todo.first.id
         found_record = Todo.find(find_todo_id)
 
@@ -81,7 +77,7 @@ describe "Base Model" do
 
     describe ".destroy_all" do
       it "destroys all the rows in the table" do
-        create(10)
+        create_list(:todo, 10)
         Todo.destroy_all
 
         expect(Todo.all.length).to eq 0
